@@ -58,6 +58,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- DEPENDENCY MANUAL spring-data-jpa SUDAH DIHAPUS -->
+		<!-- Karena sudah termasuk di spring-boot-starter-data-jpa -->
+		
 	</dependencies>
 
 	<build>
