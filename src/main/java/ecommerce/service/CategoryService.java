@@ -17,19 +17,16 @@ public class CategoryService {
   private final CategoryRepository categoryRepository;
 
   public List<CategoryResponse> findAll(){
-    List<Category> parents = categoryRepository.findAllByParentIsNull();
-    List<CategoryResponse> responses = parents.stream().map(category -> {
-      return CategoryResponse.builder().id(category.getId()).name(category.getName()).build();
+    List<Category> parents = categoryRepository.findAllForAPI();
+    return parents.stream().map(category -> {
+      List<Category> children = category.getChildren();
+      List<CategoryResponse> childResponses = children.stream().map(child -> {
+      return CategoryResponse.builder().id(child.getId()).name(child.getName()).build();
+    }).toList();
+    
+      return CategoryResponse.builder().id(category.getId()).name(category.getName()).children(childResponses).build();
     }).toList();
 
-    for (CategoryResponse response : responses ) {
-      List<Category> children = categoryRepository.findAllByParentId(response.getId());
-      List<CategoryResponse> childResponses = children.stream().map(category -> {
-      return CategoryResponse.builder().id(category.getId()).name(category.getName()).build();
-    }).toList();
-    response.setChildren(childResponses);
-    }
-
-    return responses;
+    
   }
 }
